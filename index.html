@@ -498,6 +498,112 @@
       box-shadow: 0 0 15px rgba(233, 69, 96, 0.15);
     }
 
+    /* ===== SELECTOR DE NIVELES ===== */
+    .level-select-section {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 400px;
+    }
+    .level-select-section.show { display: flex; }
+
+    .level-select-section h2 {
+      font-size: 28px;
+      background: linear-gradient(90deg, #ffd700, #ff8800);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 4px;
+    }
+
+    .ls-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 550px;
+      margin: 0 auto;
+    }
+
+    .ls-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      padding: 8px 4px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      min-height: 70px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .ls-card:hover { border-color: rgba(0,255,136,0.3); background: rgba(0,255,136,0.05); }
+    .ls-card.locked {
+      opacity: 0.35;
+      cursor: not-allowed;
+      filter: grayscale(0.7);
+    }
+    .ls-card.locked:hover { border-color: rgba(255,255,255,0.06); background: rgba(255,255,255,0.03); }
+    .ls-card.current {
+      border-color: #00ff88;
+      box-shadow: 0 0 15px rgba(0,255,136,0.2);
+    }
+    .ls-card.completed {
+      border-color: #ffd700;
+      background: rgba(255,215,0,0.06);
+    }
+    .ls-card .ls-num {
+      font-size: 13px;
+      font-weight: bold;
+      color: #667;
+    }
+    .ls-card .ls-icon {
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    .ls-card .ls-name {
+      font-size: 7px;
+      color: #889;
+      line-height: 1.1;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .ls-card.locked .ls-icon { filter: grayscale(1); }
+    .ls-card.completed .ls-num { color: #ffd700; }
+    .ls-card.current .ls-num { color: #00ff88; }
+    .ls-card .ls-check {
+      position: absolute;
+      top: 2px; right: 4px;
+      font-size: 10px;
+    }
+    .ls-card .ls-lock {
+      position: absolute;
+      top: 2px; right: 4px;
+      font-size: 10px;
+    }
+
+    .ls-actions {
+      margin-top: 16px;
+    }
+    #lsBackBtn {
+      background: linear-gradient(135deg, #00ff88, #00cc66);
+      color: #0a0a1a;
+      border: none;
+      padding: 12px 38px;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(0, 255, 136, 0.2);
+    }
+    #lsBackBtn:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(0, 255, 136, 0.4); }
+
     /* Ocultar/mostrar secciones */
     .game-section.hidden { display: none; }
 
@@ -688,6 +794,15 @@
       #lbBackBtn { font-size: 14px; padding: 8px 24px; }
       #lbClearBtn { font-size: 11px; padding: 8px 14px; }
 
+      .level-select-section { padding: 10px; }
+      .level-select-section h2 { font-size: 20px; }
+      .ls-grid { grid-template-columns: repeat(5, 1fr); gap: 5px; max-width: 100%; }
+      .ls-card { min-height: 56px; padding: 5px 2px; }
+      .ls-card .ls-name { font-size: 6px; }
+      .ls-card .ls-icon { font-size: 14px; }
+      .ls-card .ls-num { font-size: 10px; }
+      #lsBackBtn { font-size: 14px; padding: 8px 24px; }
+
       #pauseBtn { width: 56px; height: 56px; font-size: 20px; }
     }
 
@@ -696,6 +811,12 @@
       .game-container::before { border-radius: 14px; }
 
       h1 { font-size: 18px; letter-spacing: 2px; margin-bottom: 5px; }
+
+      .ls-grid { grid-template-columns: repeat(5, 1fr); gap: 4px; }
+      .ls-card { min-height: 48px; padding: 4px 1px; border-radius: 7px; }
+      .ls-card .ls-name { font-size: 5px; }
+      .ls-card .ls-icon { font-size: 12px; }
+      .ls-card .ls-num { font-size: 9px; }
 
       #pauseBtn { width: 48px; height: 48px; font-size: 18px; border-radius: 12px; }
 
@@ -728,13 +849,16 @@
         <div class="start-overlay" id="startOverlay">
           <div class="logo">🐍</div>
           <h2>VÍBORA</h2>
-          <p class="subtitle">Arcade <span>·</span> Velocidad progresiva <span>·</span> Récords</p>
+          <p class="subtitle">25 niveles <span>·</span> Velocidad progresiva <span>·</span> Récords</p>
           <div class="name-input-wrap">
             <label>🐉 Soy</label>
             <input type="text" id="nameInput" placeholder="Jugador" maxlength="12" autocomplete="off">
           </div>
           <button id="playBtn">▶ JUGAR</button>
-          <button id="lbStartBtn" class="leaderboard-btn" style="margin-top:10px">🏆 Puntajes</button>
+          <div style="margin-top:8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap">
+            <button id="levelsStartBtn" class="leaderboard-btn">🗺️ Niveles</button>
+            <button id="lbStartBtn" class="leaderboard-btn">🏆 Puntajes</button>
+          </div>
           <p class="controls-hint">
             <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> Mover &nbsp;·&nbsp; <kbd>Space</kbd> Pausa
           </p>
@@ -756,6 +880,7 @@
         <div class="level-box">🏰 Nivel <span id="levelDisplay">1</span> <span class="level-progress" id="levelProgress">(<span id="foodCount">0</span>/<span id="foodTarget">4</span>)</span></div>
         <div class="score-box">🍎 <span id="scoreDisplay">0</span></div>
         <div class="speed-box">⚡ <span id="speedDisplay">1</span>x</div>
+        <button id="levelsInfoBtn" style="padding:6px 10px;border-radius:8px;border:1px solid rgba(0,255,136,0.2);background:rgba(0,0,0,0.3);color:#00ff88;font-size:13px;cursor:pointer">🗺️ Niveles</button>
         <button id="restartBtn">🔄 Reiniciar</button>
         <div class="high-score-box">🏆 <span id="highScoreDisplay">0</span></div>
       </div>
@@ -766,6 +891,16 @@
 
       <div style="margin-top: 10px;">
         <button id="pauseBtn">⏸</button>
+      </div>
+    </div>
+
+    <!-- ===== SECCIÓN DEL SELECTOR DE NIVELES ===== -->
+    <div class="level-select-section" id="levelSelectSection">
+      <h2>🗺️ SELECCIÓN DE NIVELES</h2>
+      <p class="lb-subtitle" style="margin-bottom:10px">Completa cada nivel para desbloquear el siguiente</p>
+      <div class="ls-grid" id="levelGrid"></div>
+      <div class="ls-actions">
+        <button id="lsBackBtn">← Volver al juego</button>
       </div>
     </div>
 
@@ -816,6 +951,7 @@
     const finalPlayerName = document.getElementById('finalPlayerName');
     let playerName = localStorage.getItem('viboraPlayerName') || 'Jugador';
     const leaderboardSection = document.getElementById('leaderboardSection');
+    const levelSelectSection = document.getElementById('levelSelectSection');
     const leaderboardBody = document.getElementById('leaderboardBody');
     const lbStartBtn = document.getElementById('lbStartBtn');
     const lbBackBtn = document.getElementById('lbBackBtn');
@@ -829,155 +965,187 @@
     const MIN_SPEED = 60;      // velocidad máxima (más rápido)
     const SPEED_STEP = 4;      // ms que se reduce cada 50 puntos
 
-    // ---- NIVELES ----
+    // ---- NIVELES (25 niveles progresivos) ----
     const LEVELS = [
-      // ===== NIVEL 1 — PRAdera (abierto, sin paredes) =====
+      // ============ FÁCIL (Niveles 1-5) ============
       {
         name: '🌿 Pradera',
+        desc: 'Campo abierto, sin obstáculos',
         walls: [],
         foodToPass: 3, speed: 140,
         bg: '#070714', wallColor: '#1a3a2a', accent: '#00ff88', foodColor: '#ff3250', snakeColor: '#00ff88'
       },
-      // ===== NIVEL 2 — Muro (pared horizontal con hueco) =====
+      {
+        name: '🌾 Llanura',
+        desc: 'Unos pocos bloques dispersos',
+        walls: [{x:4,y:4},{x:5,y:4},{x:4,y:5},{x:5,y:5},{x:15,y:15},{x:14,y:15},{x:15,y:14},{x:14,y:14}],
+        foodToPass: 3, speed: 135,
+        bg: '#0a0a18', wallColor: '#2a3a1a', accent: '#88ff44', foodColor: '#ff4444', snakeColor: '#88ff44'
+      },
       {
         name: '🧱 El Muro',
-        walls: (() => {
-          const w = [];
-          // Pared horizontal gruesa (2 filas) con hueco en el medio
-          for (let x = 0; x < 20; x++) {
-            if (x >= 9 && x <= 10) continue; // hueco
-            w.push({x, y: 9});
-            w.push({x, y: 10});
-          }
-          return w;
-        })(),
+        desc: 'Pared horizontal con hueco',
+        walls: (()=>{const w=[];for(let x=0;x<20;x++){if(x<8||x>11){w.push({x,y:9},{x,y:10});}}return w;})(),
         foodToPass: 4, speed: 130,
         bg: '#0a0a2e', wallColor: '#1a2a5a', accent: '#4488ff', foodColor: '#ff8844', snakeColor: '#4488ff'
       },
-      // ===== NIVEL 3 — Islas (4 islas en esquinas + centro) =====
+      {
+        name: '🌳 Bosque',
+        desc: '4 grupos de árboles (2×2)',
+        walls: [{x:3,y:3},{x:4,y:3},{x:3,y:4},{x:4,y:4},{x:15,y:3},{x:16,y:3},{x:15,y:4},{x:16,y:4},{x:3,y:15},{x:4,y:15},{x:3,y:16},{x:4,y:16},{x:15,y:15},{x:16,y:15},{x:15,y:16},{x:16,y:16}],
+        foodToPass: 4, speed: 125,
+        bg: '#0a1a0a', wallColor: '#1a3a1a', accent: '#44cc44', foodColor: '#ff6644', snakeColor: '#44cc44'
+      },
       {
         name: '🏝️ Islas',
-        walls: (() => {
-          const w = [];
-          // Isla NO
-          for (let x = 2; x <= 4; x++)
-            for (let y = 2; y <= 4; y++)
-              w.push({x,y});
-          // Isla NE
-          for (let x = 15; x <= 17; x++)
-            for (let y = 2; y <= 4; y++)
-              w.push({x,y});
-          // Isla SO
-          for (let x = 2; x <= 4; x++)
-            for (let y = 15; y <= 17; y++)
-              w.push({x,y});
-          // Isla SE
-          for (let x = 15; x <= 17; x++)
-            for (let y = 15; y <= 17; y++)
-              w.push({x,y});
-          // Bloques dispersos
-          w.push({x:9,y:7},{x:10,y:7},{x:9,y:12},{x:10,y:12});
-          w.push({x:7,y:9},{x:12,y:9},{x:7,y:10},{x:12,y:10});
-          return w;
-        })(),
+        desc: '4 islas 3×3 y bloques centrales',
+        walls: (()=>{const w=[];for(let x=2;x<=4;x++)for(let y=2;y<=4;y++)w.push({x,y});for(let x=15;x<=17;x++)for(let y=2;y<=4;y++)w.push({x,y});for(let x=2;x<=4;x++)for(let y=15;y<=17;y++)w.push({x,y});for(let x=15;x<=17;x++)for(let y=15;y<=17;y++)w.push({x,y});w.push({x:9,y:7},{x:10,y:7},{x:9,y:12},{x:10,y:12});w.push({x:7,y:9},{x:12,y:9},{x:7,y:10},{x:12,y:10});return w;})(),
         foodToPass: 4, speed: 120,
         bg: '#1a0a2e', wallColor: '#5a2a6a', accent: '#aa66ff', foodColor: '#ff66aa', snakeColor: '#aa66ff'
       },
-      // ===== NIVEL 4 — Túnel (corredores verticales con barras) =====
+      // ============ MEDIO (Niveles 6-10) ============
       {
         name: '🌀 El Túnel',
-        walls: (() => {
-          const w = [];
-          // Dos paredes verticales completas
-          for (let y = 0; y < 20; y++) {
-            if (y < 7 || y > 10) { w.push({x:5, y}); }
-            if (y < 7 || y > 10) { w.push({x:14, y}); }
-          }
-          // Barras horizontales conectando
-          for (let x = 6; x <= 13; x++) {
-            w.push({x, y: 3});
-            w.push({x, y: 16});
-          }
-          return w;
-        })(),
-        foodToPass: 5, speed: 110,
+        desc: 'Corredores verticales con barras',
+        walls: (()=>{const w=[];for(let y=0;y<20;y++){if(y<7||y>10){w.push({x:5,y});w.push({x:14,y});}}for(let x=6;x<=13;x++){w.push({x,y:3});w.push({x,y:16});}return w;})(),
+        foodToPass: 5, speed: 115,
         bg: '#0a1a1a', wallColor: '#1a4a4a', accent: '#00ccaa', foodColor: '#ffaa00', snakeColor: '#00ccaa'
       },
-      // ===== NIVEL 5 — Fortaleza (castillo con torreones) =====
+      {
+        name: '⚔️ Encrucijada',
+        desc: 'Cruz de paredes en el centro',
+        walls: (()=>{const w=[];for(let y=3;y<=16;y++){w.push({x:9,y});w.push({x:10,y});}for(let x=3;x<=16;x++){w.push({x,y:9});w.push({x,y:10});}return w;})(),
+        foodToPass: 5, speed: 110,
+        bg: '#1a1a0a', wallColor: '#4a4a1a', accent: '#cccc44', foodColor: '#ff44ff', snakeColor: '#cccc44'
+      },
       {
         name: '🏰 Fortaleza',
-        walls: (() => {
-          const w = [];
-          // Muralla exterior (rectángulo con puertas arriba y abajo)
-          for (let x = 6; x <= 13; x++) {
-            if (x !== 9 && x !== 10) { w.push({x, y: 4}); }  // arriba con puerta
-            if (x !== 9 && x !== 10) { w.push({x, y: 15}); } // abajo con puerta
-          }
-          for (let y = 5; y <= 14; y++) {
-            w.push({x:6, y});
-            w.push({x:13, y});
-          }
-          // Torreones en las esquinas
-          w.push({x:6,y:4},{x:7,y:4}); // torreón NO
-          w.push({x:12,y:4},{x:13,y:4}); // torreón NE
-          w.push({x:6,y:15},{x:7,y:15}); // torreón SO
-          w.push({x:12,y:15},{x:13,y:15}); // torreón SE
-          // Torre del homenaje interior (cruz)
-          w.push({x:9,y:8},{x:10,y:8});
-          w.push({x:9,y:9},{x:10,y:9});
-          w.push({x:9,y:10},{x:10,y:10});
-          w.push({x:9,y:11},{x:10,y:11});
-          // Muro interior horizontal
-          for (let x = 8; x <= 11; x++) {
-            w.push({x, y: 7});
-            w.push({x, y: 12});
-          }
-          return w;
-        })(),
-        foodToPass: 5, speed: 100,
+        desc: 'Castillo con murallas y torreones',
+        walls: (()=>{const w=[];for(let x=6;x<=13;x++){if(x!==9&&x!==10){w.push({x,y:4});w.push({x,y:15});}}for(let y=5;y<=14;y++){w.push({x:6,y});w.push({x:13,y});}w.push({x:6,y:4},{x:7,y:4},{x:12,y:4},{x:13,y:4},{x:6,y:15},{x:7,y:15},{x:12,y:15},{x:13,y:15});for(let x=9;x<=10;x++)for(let y=8;y<=11;y++)w.push({x,y});for(let x=8;x<=11;x++){w.push({x,y:7});w.push({x,y:12});}return w;})(),
+        foodToPass: 5, speed: 105,
         bg: '#1a0a0a', wallColor: '#5a2a1a', accent: '#ff6644', foodColor: '#44ff88', snakeColor: '#ff6644'
       },
-      // ===== NIVEL 6 — Caos (patrón denso y laberíntico) =====
       {
-        name: '💥 Caos',
-        walls: (() => {
-          const w = [];
-          // Esquinas superiores
-          for (let x = 1; x <= 3; x++)
-            for (let y = 1; y <= 3; y++)
-              w.push({x,y});
-          for (let x = 16; x <= 18; x++)
-            for (let y = 1; y <= 3; y++)
-              w.push({x,y});
-          // Esquinas inferiores
-          for (let x = 1; x <= 3; x++)
-            for (let y = 16; y <= 18; y++)
-              w.push({x,y});
-          for (let x = 16; x <= 18; x++)
-            for (let y = 16; y <= 18; y++)
-              w.push({x,y});
-          // Barras verticales internas
-          for (let y = 5; y <= 14; y++) {
-            w.push({x:8, y});
-            w.push({x:11, y});
-          }
-          // Barras horizontales internas
-          for (let x = 6; x <= 7; x++) {
-            w.push({x, y: 5}); w.push({x, y: 14});
-          }
-          for (let x = 12; x <= 13; x++) {
-            w.push({x, y: 5}); w.push({x, y: 14});
-          }
-          // Bloques sueltos
-          w.push({x:5,y:7},{x:5,y:8},{x:14,y:7},{x:14,y:8});
-          w.push({x:5,y:11},{x:5,y:12},{x:14,y:11},{x:14,y:12});
-          // Centro
-          w.push({x:9,y:6},{x:10,y:6});
-          w.push({x:9,y:13},{x:10,y:13});
-          return w;
-        })(),
+        name: '🌌 Laberinto I',
+        desc: 'Primer laberinto con pasillos',
+        walls: (()=>{const w=[];for(let y=0;y<7;y++){w.push({x:5,y});w.push({x:14,y});}for(let y=13;y<20;y++){w.push({x:5,y});w.push({x:14,y});}for(let x=7;x<=12;x++){w.push({x,y:6});w.push({x,y:13});}w.push({x:2,y:9},{x:2,y:10},{x:17,y:9},{x:17,y:10});w.push({x:7,y:10},{x:8,y:10},{x:11,y:9},{x:12,y:9});return w;})(),
+        foodToPass: 6, speed: 100,
+        bg: '#0a0a2a', wallColor: '#2a1a4a', accent: '#8866ff', foodColor: '#ff8844', snakeColor: '#8866ff'
+      },
+      {
+        name: '🌋 Volcán',
+        desc: 'Anillo de paredes concéntricas',
+        walls: (()=>{const w=[];for(let x=6;x<=13;x++){w.push({x,y:5});w.push({x,y:14});}for(let y=6;y<=13;y++){w.push({x:5,y});w.push({x:14,y});}for(let x=8;x<=11;x++){w.push({x,y:7});w.push({x,y:12});}for(let y=8;y<=11;y++){w.push({x:7,y});w.push({x:12,y});}return w;})(),
+        foodToPass: 6, speed: 95,
+        bg: '#1a0a00', wallColor: '#5a2a00', accent: '#ff8800', foodColor: '#ff4444', snakeColor: '#ff8800'
+      },
+      // ============ DIFÍCIL (Niveles 11-15) ============
+      {
+        name: '❄️ Hielo',
+        desc: 'Bloques dispersos, pasillos estrechos',
+        walls: (()=>{const w=[];for(let x=2;x<=4;x++)for(let y=2;y<=3;y++)w.push({x,y});for(let x=15;x<=17;x++)for(let y=2;y<=3;y++)w.push({x,y});for(let x=2;x<=4;x++)for(let y=16;y<=17;y++)w.push({x,y});for(let x=15;x<=17;x++)for(let y=16;y<=17;y++)w.push({x,y});for(let y=0;y<20;y++){if(y<6||y>12){w.push({x:7,y});w.push({x:12,y});}}w.push({x:9,y:5},{x:10,y:5},{x:9,y:14},{x:10,y:14});w.push({x:4,y:9},{x:15,y:10});return w;})(),
         foodToPass: 6, speed: 90,
-        bg: '#0a0a0a', wallColor: '#3a2a1a', accent: '#ff8800', foodColor: '#ff0066', snakeColor: '#ff8800'
+        bg: '#0a0a1a', wallColor: '#1a2a4a', accent: '#66ccff', foodColor: '#ff66aa', snakeColor: '#66ccff'
+      },
+      {
+        name: '🔥 Infierno',
+        desc: 'Paredes zigzag y trampas',
+        walls: (()=>{const w=[];for(let x=2;x<=17;x++){if(x%3!==0){w.push({x,y:3});w.push({x,y:16});}}for(let y=4;y<=15;y++){if(y%2===0){w.push({x:3,y});w.push({x:16,y});}}for(let y=5;y<=14;y+=2){w.push({x:7,y});w.push({x:12,y});}w.push({x:5,y:7},{x:5,y:8},{x:14,y:11},{x:14,y:12});return w;})(),
+        foodToPass: 7, speed: 85,
+        bg: '#1a0000', wallColor: '#5a0000', accent: '#ff3333', foodColor: '#ffaa00', snakeColor: '#ff3333'
+      },
+      {
+        name: '⚡ Tormenta',
+        desc: 'Barras diagonales y obstáculos',
+        walls: (()=>{const w=[];for(let i=2;i<=17;i++){w.push({x:i,y:4});w.push({x:i,y:15});}w.push({x:5,y:7},{x:6,y:7},{x:5,y:8});w.push({x:14,y:12},{x:13,y:12},{x:14,y:11});w.push({x:3,y:9},{x:3,y:10},{x:16,y:9},{x:16,y:10});w.push({x:8,y:3},{x:11,y:16});w.push({x:9,y:6},{x:10,y:13});for(let y=5;y<=14;y+=3){w.push({x:9,y});w.push({x:10,y});}return w;})(),
+        foodToPass: 7, speed: 80,
+        bg: '#0a001a', wallColor: '#2a004a', accent: '#aa44ff', foodColor: '#00ffcc', snakeColor: '#aa44ff'
+      },
+      {
+        name: '💎 Cristal',
+        desc: 'Patrón de diamante asimétrico',
+        walls: (()=>{const w=[];for(let x=7;x<=12;x++){w.push({x,y:3});w.push({x,y:16});}for(let y=4;y<=6;y++){w.push({x:5,y});w.push({x:14,y});}for(let y=13;y<=15;y++){w.push({x:5,y});w.push({x:14,y});}for(let y=7;y<=12;y++){w.push({x:4,y});w.push({x:15,y});}w.push({x:6,y:6},{x:13,y:6},{x:6,y:13},{x:13,y:13});w.push({x:8,y:8},{x:11,y:8},{x:8,y:11},{x:11,y:11});return w;})(),
+        foodToPass: 7, speed: 75,
+        bg: '#0a0010', wallColor: '#3a005a', accent: '#ff66ff', foodColor: '#66ffff', snakeColor: '#ff66ff'
+      },
+      {
+        name: '🕸️ Telaraña',
+        desc: 'Patrón de araña con radios',
+        walls: (()=>{const w=[];for(let x=7;x<=12;x++)for(let y=7;y<=12;y++){w.push({x,y});}for(let x=5;x<=14;x+=9){for(let y=4;y<=15;y++){w.push({x,y});}}for(let y=5;y<=14;y+=9){for(let x=4;x<=15;x++){w.push({x,y});}}for(let i=6;i<=13;i++){w.push({x:i,y:4});w.push({x:i,y:15});}w.push({x:4,y:7},{x:4,y:8},{x:4,y:11},{x:4,y:12},{x:15,y:7},{x:15,y:8},{x:15,y:11},{x:15,y:12});return w;})(),
+        foodToPass: 8, speed: 70,
+        bg: '#0a0a0a', wallColor: '#2a2a2a', accent: '#cccccc', foodColor: '#ff0044', snakeColor: '#cccccc'
+      },
+      // ============ EXPERTO (Niveles 16-20) ============
+      {
+        name: '🏛️ Columnas',
+        desc: 'Hileras de columnas griegas',
+        walls: (()=>{const w=[];for(let i=2;i<=17;i+=4){for(let y=2;y<=6;y++)w.push({x:i,y});for(let y=13;y<=17;y++)w.push({x:i,y});}for(let i=4;i<=15;i+=4){for(let y=7;y<=12;y++)w.push({x:i,y});}w.push({x:2,y:9},{x:2,y:10},{x:17,y:9},{x:17,y:10});w.push({x:7,y:4},{x:12,y:15});return w;})(),
+        foodToPass: 8, speed: 65,
+        bg: '#0a0a14', wallColor: '#2a2a3a', accent: '#aa9955', foodColor: '#ff6644', snakeColor: '#aa9955'
+      },
+      {
+        name: '🧩 Rompecabezas',
+        desc: 'Patrón de tablero de ajedrez',
+        walls: (()=>{const w=[];for(let x=0;x<20;x++){for(let y=0;y<20;y++){if((x+y)%3===0&&x>1&&x<18&&y>1&&y<18){w.push({x,y});}}}return w;})(),
+        foodToPass: 8, speed: 60,
+        bg: '#0a0a0a', wallColor: '#1a1a2a', accent: '#4488ff', foodColor: '#ff88ff', snakeColor: '#4488ff'
+      },
+      {
+        name: '⚙️ Engranaje',
+        desc: 'Rueda dentada gigante',
+        walls: (()=>{const w=[];for(let x=7;x<=12;x++){w.push({x,y:2});w.push({x,y:17});}for(let y=3;y<=16;y++){if(y<7||y>12){w.push({x:6,y});w.push({x:13,y});}}for(let y=5;y<=14;y+=3){for(let x=3;x<=5;x++)w.push({x,y});for(let x=14;x<=16;x++)w.push({x,y});}for(let x=8;x<=11;x++){w.push({x,y:5});w.push({x,y:14});}w.push({x:4,y:9},{x:4,y:10},{x:15,y:9},{x:15,y:10});return w;})(),
+        foodToPass: 9, speed: 55,
+        bg: '#0a0a00', wallColor: '#3a3a00', accent: '#cccc44', foodColor: '#ff6600', snakeColor: '#cccc44'
+      },
+      {
+        name: '🌪️ Torbellino',
+        desc: 'Espiral que se estrecha',
+        walls: (()=>{const w=[];for(let x=2;x<=17;x++){w.push({x,y:2});w.push({x,y:17});}for(let y=3;y<=16;y++){w.push({x:2,y});w.push({x:17,y});}for(let x=4;x<=15;x++){w.push({x,y:4});w.push({x,y:15});}for(let y=5;y<=14;y++){w.push({x:4,y});w.push({x:15,y});}for(let x=6;x<=13;x++){w.push({x,y:6});w.push({x,y:13});}for(let y=7;y<=12;y++){w.push({x:6,y});w.push({x:13,y});}for(let x=8;x<=11;x++){w.push({x,y:8});w.push({x,y:11});}w.push({x:8,y:9},{x:8,y:10},{x:11,y:9},{x:11,y:10});return w;})(),
+        foodToPass: 9, speed: 50,
+        bg: '#0a000a', wallColor: '#3a003a', accent: '#ff44aa', foodColor: '#44ffaa', snakeColor: '#ff44aa'
+      },
+      {
+        name: '☣️ Zona Muerta',
+        desc: 'Zona de alta radiación',
+        walls: (()=>{const w=[];for(let x=1;x<=18;x++){if(x<5||x>14){w.push({x,y:1});w.push({x,y:18});}}for(let y=2;y<=17;y++){w.push({x:1,y});w.push({x:18,y});}for(let x=3;x<=16;x+=13){for(let y=3;y<=16;y++)w.push({x,y});}for(let y=3;y<=16;y+=13){for(let x=3;x<=16;x++)w.push({x,y});}w.push({x:5,y:5},{x:14,y:5},{x:5,y:14},{x:14,y:14},{x:9,y:9},{x:10,y:10});w.push({x:6,y:8},{x:7,y:8},{x:12,y:11},{x:13,y:11});return w;})(),
+        foodToPass: 10, speed: 45,
+        bg: '#0a1a00', wallColor: '#1a3a00', accent: '#66ff00', foodColor: '#ff0066', snakeColor: '#66ff00'
+      },
+      // ============ LEYENDA (Niveles 21-25) ============
+      {
+        name: '🗿 Cenizas',
+        desc: 'Caos asimétrico total',
+        walls: (()=>{const w=[];for(let x=2;x<=6;x++){w.push({x,y:3});w.push({x,y:4});}for(let x=13;x<=17;x++){w.push({x,y:3});w.push({x,y:4});}for(let y=5;y<=8;y++){w.push({x:4,y});w.push({x:15,y});}for(let x=6;x<=9;x++){w.push({x,y:6});w.push({x,y:7});}for(let x=10;x<=13;x++){w.push({x,y:12});w.push({x,y:13});}for(let y=11;y<=15;y++){w.push({x:5,y});w.push({x:14,y});}for(let x=2;x<=5;x++){w.push({x,y:15});w.push({x,y:16});}for(let x=14;x<=17;x++){w.push({x,y:15});w.push({x,y:16});}w.push({x:7,y:9},{x:8,y:9},{x:8,y:10},{x:9,y:10},{x:10,y:9},{x:11,y:9},{x:11,y:10},{x:12,y:10});w.push({x:3,y:10},{x:4,y:11},{x:16,y:9},{x:15,y:10});return w;})(),
+        foodToPass: 10, speed: 40,
+        bg: '#0a0a0a', wallColor: '#2a1a0a', accent: '#aa6633', foodColor: '#ff4444', snakeColor: '#aa6633'
+      },
+      {
+        name: '👹 Pesadilla',
+        desc: 'Corredores ultra estrechos',
+        walls: (()=>{const w=[];for(let y=2;y<=17;y++){w.push({x:2,y});w.push({x:17,y});}for(let x=3;x<=16;x++){w.push({x,y:2});w.push({x,y:17});}for(let y=4;y<=7;y++){w.push({x:6,y});w.push({x:13,y});}for(let y=10;y<=15;y++){w.push({x:6,y});w.push({x:13,y});}for(let x=4;x<=7;x++){w.push({x,y:9});w.push({x,y:10})}for(let x=12;x<=15;x++){w.push({x,y:9});w.push({x,y:10})}for(let x=8;x<=11;x++){w.push({x,y:5});w.push({x,y:6});w.push({x,y:13});w.push({x,y:14});}return w;})(),
+        foodToPass: 11, speed: 35,
+        bg: '#0a000a', wallColor: '#3a001a', accent: '#cc0044', foodColor: '#00ffff', snakeColor: '#cc0044'
+      },
+      {
+        name: '🌀 Abismo',
+        desc: 'Laberinto infernal sin escapatoria',
+        walls: (()=>{const w=[];for(let y=0;y<20;y++){if(y<8||y>11){w.push({x:4,y});w.push({x:15,y});}}for(let x=5;x<=14;x++){w.push({x,y:4});w.push({x,y:15});}for(let y=6;y<=7;y++){w.push({x:7,y});w.push({x:12,y})}for(let y=12;y<=13;y++){w.push({x:7,y});w.push({x:12,y})}for(let x=5;x<=7;x++){w.push({x,y:8});w.push({x,y:11})}for(let x=12;x<=14;x++){w.push({x,y:8});w.push({x,y:11})}w.push({x:9,y:6},{x:10,y:6},{x:9,y:13},{x:10,y:13});w.push({x:8,y:5},{x:11,y:5},{x:8,y:14},{x:11,y:14});w.push({x:3,y:9},{x:3,y:10},{x:16,y:9},{x:16,y:10});return w;})(),
+        foodToPass: 11, speed: 30,
+        bg: '#00000a', wallColor: '#1a003a', accent: '#6600cc', foodColor: '#ffaa00', snakeColor: '#6600cc'
+      },
+      {
+        name: '💀 Juicio Final',
+        desc: 'Densidad extrema, apenas espacio',
+        walls: (()=>{const w=[];for(let x=1;x<=18;x++){for(let y=1;y<=18;y++){if(x%2===0&&y%2===0)continue;if(x%3===0&&y%5===0)continue;if(x===9&&y===10||x===10&&y===9)continue;if(x>3&&x<16&&y>3&&y<16){w.push({x,y});}}}return w;})(),
+        foodToPass: 12, speed: 25,
+        bg: '#050005', wallColor: '#3a001a', accent: '#ff0044', foodColor: '#ffd700', snakeColor: '#ff0044'
+      },
+      {
+        name: '🏆 Maestro',
+        desc: '¡El desafío definitivo!',
+        walls: (()=>{const w=[];for(let x=2;x<=17;x++){for(let y=2;y<=17;y++){const cx=9.5,cy=9.5;const dist=Math.abs(x-cx)+Math.abs(y-cy);if(dist>=4&&dist<=5&&x>3&&x<16&&y>3&&y<16)w.push({x,y});if(dist>=7&&dist<=8)w.push({x,y});}}for(let x=8;x<=11;x++){w.push({x,y:8});w.push({x,y:11})}return w;})(),
+        foodToPass: 15, speed: 20,
+        bg: '#000005', wallColor: '#2a0044', accent: '#ffd700', foodColor: '#ff0088', snakeColor: '#ffd700'
       },
     ];
     const TOTAL_LEVELS = LEVELS.length;
@@ -1409,7 +1577,90 @@
       gameSection.classList.remove('hidden');
     }
 
-    // ---- 12. GAME OVER ----
+    // ---- 12. SELECTOR DE NIVELES ----
+    let selectedLevelIndex = 0; // Nivel que se está jugando
+
+    function getUnlockedLevels() {
+      try {
+        return JSON.parse(localStorage.getItem('viboraUnlockedLevels')) || [0];
+      } catch(e) {
+        return [0];
+      }
+    }
+
+    function saveUnlockedLevels(levels) {
+      localStorage.setItem('viboraUnlockedLevels', JSON.stringify(levels));
+    }
+
+    function unlockNextLevel(completedIdx) {
+      const unlocked = getUnlockedLevels();
+      const next = completedIdx + 1;
+      if (next < TOTAL_LEVELS && !unlocked.includes(next)) {
+        unlocked.push(next);
+        saveUnlockedLevels(unlocked);
+      }
+    }
+
+    function renderLevelSelect() {
+      const grid = document.getElementById('levelGrid');
+      grid.innerHTML = '';
+      const unlocked = getUnlockedLevels();
+      const completed = (function(){
+        try { return JSON.parse(localStorage.getItem('viboraCompletedLevels')) || []; }
+        catch(e) { return []; }
+      })();
+
+      for (let i = 0; i < TOTAL_LEVELS; i++) {
+        const lv = LEVELS[i];
+        const isUnlocked = unlocked.includes(i);
+        const isCompleted = completed.includes(i);
+        const isCurrent = i === selectedLevelIndex;
+
+        const card = document.createElement('div');
+        card.className = 'ls-card';
+        if (!isUnlocked) card.classList.add('locked');
+        if (isCompleted) card.classList.add('completed');
+        if (isCurrent && isUnlocked) card.classList.add('current');
+
+        const iconPart = lv.name.match(/^(\S+)/)?.[1] || '🎯';
+        const namePart = lv.name.replace(/^\S+\s*/,'');
+
+        card.innerHTML = `
+          <span class="ls-num">${i + 1}${isCompleted ? ' ✓' : ''}</span>
+          <span class="ls-icon">${iconPart}</span>
+          <span class="ls-name">${namePart}</span>
+          ${!isUnlocked ? '<span class="ls-lock">🔒</span>' : ''}
+        `;
+
+        if (isUnlocked) {
+          card.addEventListener('click', function() {
+            selectLevel(i);
+          });
+        }
+
+        grid.appendChild(card);
+      }
+    }
+
+    function selectLevel(index) {
+      selectedLevelIndex = index;
+      // Cerrar selector y empezar el nivel
+      closeLevelSelect();
+      startGame();
+    }
+
+    function openLevelSelect() {
+      renderLevelSelect();
+      gameSection.classList.add('hidden');
+      levelSelectSection.classList.add('show');
+    }
+
+    function closeLevelSelect() {
+      levelSelectSection.classList.remove('show');
+      gameSection.classList.remove('hidden');
+    }
+
+    // ---- 13. GAME OVER ----
     function gameOver() {
       gameRunning = false;
       if (gameLoopId) { clearInterval(gameLoopId); gameLoopId = null; }
@@ -1449,6 +1700,17 @@
       document.getElementById('completedLevelName').textContent = level.name;
       document.getElementById('levelCompleteOverlay').classList.add('show');
 
+      // Guardar nivel completado y desbloquear el siguiente
+      const completed = (function(){
+        try { return JSON.parse(localStorage.getItem('viboraCompletedLevels')) || []; }
+        catch(e) { return []; }
+      })();
+      if (!completed.includes(currentLevel)) {
+        completed.push(currentLevel);
+        localStorage.setItem('viboraCompletedLevels', JSON.stringify(completed));
+      }
+      unlockNextLevel(currentLevel);
+
       // Explosión de partículas
       spawnParticles(canvas.width / 2, canvas.height / 2, '#ffd700', 60);
       spawnParticles(canvas.width / 2, canvas.height / 2, level.accent, 40);
@@ -1479,6 +1741,7 @@
       flashAlpha = 0;
       gamePaused = false;
 
+      selectedLevelIndex = currentLevel;
       const level = LEVELS[currentLevel];
       currentSpeed = Math.max(MIN_SPEED, BASE_SPEED - currentLevel * 10);
       speedDisplay.textContent = Math.floor((BASE_SPEED - currentSpeed) / SPEED_STEP) + 1;
@@ -1508,6 +1771,10 @@
 
     // ---- 15. INICIAR / REINICIAR ----
     function startGame() {
+      // Ocultar overlays
+      startOverlay.style.display = 'none';
+      gameOverOverlay.classList.remove('show');
+
       // Reiniciar estado
       snake = [
         { x: 10, y: 10 },
@@ -1517,9 +1784,9 @@
       direction = { x: 1, y: 0 };
       nextDirection = { x: 1, y: 0 };
       score = 0;
-      currentLevel = 0;
+      currentLevel = selectedLevelIndex;
       foodEatenThisLevel = 0;
-      currentSpeed = LEVELS[0].speed;
+      currentSpeed = LEVELS[currentLevel].speed;
       speedDisplay.textContent = '1';
       scoreDisplay.textContent = '0';
       particles = [];
@@ -1532,13 +1799,13 @@
       document.getElementById('pauseBtn').classList.remove('paused');
 
       // UI de nivel
-      document.getElementById('levelDisplay').textContent = '1';
-      document.getElementById('foodTarget').textContent = LEVELS[0].foodToPass;
+      document.getElementById('levelDisplay').textContent = currentLevel + 1;
+      document.getElementById('foodTarget').textContent = LEVELS[currentLevel].foodToPass;
       document.getElementById('foodCount').textContent = '0';
 
-      // Banner del primer nivel
+      // Banner del nivel
       const banner = document.getElementById('levelBanner');
-      banner.textContent = '🏰 ' + LEVELS[0].name;
+      banner.textContent = '🏰 ' + LEVELS[currentLevel].name;
       banner.classList.add('show');
       setTimeout(() => banner.classList.remove('show'), 1500);
 
@@ -1603,8 +1870,8 @@
     });
 
     // ---- 18. BOTONES ----
-    restartBtn.addEventListener('click', startGame);
-    restartBtn2.addEventListener('click', startGame);
+    restartBtn.addEventListener('click', function() { selectedLevelIndex = 0; startGame(); });
+    restartBtn2.addEventListener('click', function() { selectedLevelIndex = 0; startGame(); });
 
     // ---- 19. CONTROL TÁCTIL (swipe + D-pad) ----
     function setDirection(dx, dy) {
@@ -1666,6 +1933,14 @@
       }
     });
 
+    // Botón SELECTOR DE NIVELES
+    const levelsStartBtn = document.getElementById('levelsStartBtn');
+    const levelsInfoBtn = document.getElementById('levelsInfoBtn');
+    const lsBackBtn = document.getElementById('lsBackBtn');
+    levelsStartBtn.addEventListener('click', openLevelSelect);
+    levelsInfoBtn.addEventListener('click', openLevelSelect);
+    lsBackBtn.addEventListener('click', closeLevelSelect);
+
     // Guardar nombre al escribir
     nameInput.addEventListener('input', function () {
       const name = nameInput.value.trim() || 'Jugador';
@@ -1683,28 +1958,30 @@
     // Botón JUGAR — inicia la partida
     playBtn.addEventListener('click', function (e) {
       console.log('▶ JUGAR clickeado!');
+      selectedLevelIndex = 0;
       const name = nameInput.value.trim() || 'Jugador';
       playerName = name;
       localStorage.setItem('viboraPlayerName', name);
       playerNameDisplay.textContent = '🐉 ' + name;
-      startOverlay.style.display = 'none';
       startGame();
     });
 
-    // Escape cierra el leaderboard
+    // Escape cierra el leaderboard o selector de niveles
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && leaderboardSection.classList.contains('show')) {
-        closeLeaderboard();
+      if (e.key === 'Escape') {
+        if (levelSelectSection.classList.contains('show')) { closeLevelSelect(); }
+        else if (leaderboardSection.classList.contains('show')) { closeLeaderboard(); }
       }
     });
 
-    // También se puede iniciar con Enter o Espacio (solo si el leaderboard NO está abierto)
+    // También se puede iniciar con Enter o Espacio (solo si leaderboard/niveles NO está abierto)
     document.addEventListener('keydown', function startOnEnter(e) {
       if (e.key === 'Enter' || e.key === ' ') {
         if (leaderboardSection.classList.contains('show')) return;
+        if (levelSelectSection.classList.contains('show')) return;
         if (startOverlay.style.display !== 'none') {
           console.log('▶ Iniciado con tecla: ' + e.key);
-          startOverlay.style.display = 'none';
+          selectedLevelIndex = 0;
           startGame();
         }
       }
