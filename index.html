@@ -42,7 +42,7 @@
       text-align: center;
       position: relative;
       width: auto;
-      max-width: min(860px, 95vw);
+      max-width: min(1060px, 95vw);
     }
 
     /* Borde animado */
@@ -86,7 +86,7 @@
         inset 0 0 80px rgba(0, 0, 0, 0.7),
         0 0 50px rgba(0, 255, 136, 0.08);
       width: 100%;
-      max-width: 800px;
+      max-width: 1000px;
       height: auto;
       aspect-ratio: 1/1;
     }
@@ -343,7 +343,7 @@
       position: relative;
       display: inline-block;
       width: 100%;
-      max-width: 800px;
+      max-width: 1000px;
     }
 
     .instructions {
@@ -713,7 +713,7 @@
       <h1>🐍 VÍBORA</h1>
 
       <div class="canvas-wrapper" id="canvasWrapper">
-        <canvas id="gameCanvas" width="800" height="800"></canvas>
+        <canvas id="gameCanvas" width="1000" height="1000"></canvas>
 
         <!-- Pantalla de Game Over -->
         <div class="game-over-overlay" id="gameOverOverlay">
@@ -823,7 +823,7 @@
     const lbGameOverBtn = document.getElementById('lbGameOverBtn');
 
     // ---- 2. CONFIGURACIÓN ----
-    const TILE = 40;
+    const TILE = 50;
     const GRID = 20;
     const BASE_SPEED = 140;    // ms por paso (más lento al inicio)
     const MIN_SPEED = 60;      // velocidad máxima (más rápido)
