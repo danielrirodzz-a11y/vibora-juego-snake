@@ -598,60 +598,6 @@
       opacity: 1;
     }
 
-    /* ===== D-PAD (controles táctiles) ===== */
-    .dpad {
-      display: none;
-      justify-content: center;
-      align-items: center;
-      margin-top: 14px;
-      gap: 6px;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
-    }
-    .dpad.show { display: flex; }
-
-    .dpad-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .dpad-btn {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      border: 2px solid rgba(0, 255, 136, 0.25);
-      background: rgba(0, 0, 0, 0.4);
-      color: #00ff88;
-      font-size: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.1s;
-      touch-action: manipulation;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .dpad-btn:active {
-      background: rgba(0, 255, 136, 0.2);
-      border-color: #00ff88;
-      transform: scale(0.92);
-    }
-    .dpad-btn.disabled {
-      opacity: 0.3;
-      pointer-events: none;
-    }
-
-    .dpad-center {
-      width: 64px;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     #pauseBtn {
       width: 64px;
       height: 64px;
@@ -742,9 +688,7 @@
       #lbBackBtn { font-size: 14px; padding: 8px 24px; }
       #lbClearBtn { font-size: 11px; padding: 8px 14px; }
 
-      .dpad-btn { width: 56px; height: 56px; font-size: 24px; }
       #pauseBtn { width: 56px; height: 56px; font-size: 20px; }
-      .dpad-center { width: 56px; height: 56px; }
     }
 
     @media (max-width: 450px) {
@@ -753,16 +697,10 @@
 
       h1 { font-size: 18px; letter-spacing: 2px; margin-bottom: 5px; }
 
-      .dpad-btn { width: 48px; height: 48px; font-size: 20px; border-radius: 12px; }
       #pauseBtn { width: 48px; height: 48px; font-size: 18px; border-radius: 12px; }
-      .dpad-center { width: 48px; height: 48px; }
 
       .start-overlay .logo { font-size: 34px; }
       #playBtn { font-size: 16px; padding: 8px 28px; }
-    }
-
-    @media (pointer: coarse) {
-      .dpad { display: flex; }
     }
   </style>
 </head>
@@ -826,21 +764,8 @@
         <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> Mover &nbsp;·&nbsp; <kbd>Space</kbd> Pausa
       </div>
 
-      <!-- ===== D-PAD MÓVIL ===== -->
-      <div class="dpad" id="dpad">
-        <div class="dpad-col">
-          <button class="dpad-btn" data-dir="up">▲</button>
-        </div>
-        <div class="dpad-col">
-          <button class="dpad-btn" data-dir="left">◀</button>
-          <div class="dpad-center">
-            <button id="pauseBtn">⏸</button>
-          </div>
-          <button class="dpad-btn" data-dir="right">▶</button>
-        </div>
-        <div class="dpad-col">
-          <button class="dpad-btn" data-dir="down">▼</button>
-        </div>
+      <div style="margin-top: 10px;">
+        <button id="pauseBtn">⏸</button>
       </div>
     </div>
 
@@ -1513,7 +1438,6 @@
       }
 
       gameOverOverlay.classList.add('show');
-      document.getElementById('dpad').classList.remove('show');
     }
 
     // ---- 13. LEVEL COMPLETE / SIGUIENTE NIVEL ----
@@ -1604,8 +1528,6 @@
       gameOverOverlay.classList.remove('show');
       newRecordEl.classList.remove('show');
       document.getElementById('levelCompleteOverlay').classList.remove('show');
-      // Mostrar D-pad
-      document.getElementById('dpad').classList.add('show');
       document.getElementById('pauseBtn').textContent = '⏸';
       document.getElementById('pauseBtn').classList.remove('paused');
 
@@ -1710,20 +1632,6 @@
         setDirection(0, dy > 0 ? 1 : -1);
       }
     }, { passive: true });
-
-    // D-pad y pause
-    document.querySelectorAll('.dpad-btn').forEach(btn => {
-      const handler = function(e) {
-        e.preventDefault();
-        const dir = btn.dataset.dir;
-        if (dir === 'up') setDirection(0, -1);
-        else if (dir === 'down') setDirection(0, 1);
-        else if (dir === 'left') setDirection(-1, 0);
-        else if (dir === 'right') setDirection(1, 0);
-      };
-      btn.addEventListener('mousedown', handler);
-      btn.addEventListener('touchstart', handler, { passive: false });
-    });
 
     document.getElementById('pauseBtn').addEventListener('click', function(e) {
       if (!gameRunning) return;
